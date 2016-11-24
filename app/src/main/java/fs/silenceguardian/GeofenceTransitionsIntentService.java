@@ -45,28 +45,30 @@ public class GeofenceTransitionsIntentService extends IntentService {
             return;
         }
 
-        int geofenceTransition = geofencingEvent.getGeofenceTransition();
+        if (StateHolder.getStateHolder(this).isAutoSilentEnabled()) {
+            int geofenceTransition = geofencingEvent.getGeofenceTransition();
 
-        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
-            setNormalMode();
-        } else {
-            setSilentMode();
-        }
+            if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
+                setNormalMode();
+            } else {
+                setSilentMode();
+            }
 
-        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
-            geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
+            if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
+                geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
 
-            List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
+                List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
 
-            String geofenceTransitionDetails = getGeofenceTransitionDetails(
-                geofenceTransition,
-                triggeringGeofences
-            );
+                String geofenceTransitionDetails = getGeofenceTransitionDetails(
+                    geofenceTransition,
+                    triggeringGeofences
+                );
 
-            sendNotification(geofenceTransitionDetails);
-            Log.i(TAG, geofenceTransitionDetails);
-        } else {
-            Log.e(TAG, getString(R.string.geofence_transition_invalid_type, geofenceTransition));
+                sendNotification(geofenceTransitionDetails);
+                Log.i(TAG, geofenceTransitionDetails);
+            } else {
+                Log.e(TAG, getString(R.string.geofence_transition_invalid_type, geofenceTransition));
+            }
         }
     }
 

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Silence Guardian</string>
-    <string name="enable_app">Enable app</string>
-    <string name="geofence_not_available">Geofence not availabe</string>
+    <string name="enable_auto_silence">Enable auto silence</string>
+    <string name="geofence_not_available">Geofence not available</string>
     <string name="geofence_too_many_geofences">Too many geofences</string>
     <string name="geofence_too_many_pending_intents">too many actions for geofence</string>
     <string name="unknown_geofence_error">Error</string>

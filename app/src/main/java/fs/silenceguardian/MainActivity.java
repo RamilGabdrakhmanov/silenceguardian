@@ -2,13 +2,13 @@ package fs.silenceguardian;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -25,28 +25,34 @@ public class MainActivity extends AppCompatActivity
     implements GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
 
-    protected static final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
 
-    protected GoogleApiClient     mGoogleApiClient;
-    protected ArrayList<Geofence> mGeofenceList;
-    private   PendingIntent       mGeofencePendingIntent;
-    private   SharedPreferences   mSharedPreferences;
-    private   boolean             mGeofencesAdded;
+    private GoogleApiClient     mGoogleApiClient;
+    private ArrayList<Geofence> mGeofenceList;
+    private PendingIntent       mGeofencePendingIntent;
+    private boolean             mGeofencesAdded;
+    private StateHolder         stateHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSharedPreferences = getSharedPreferences("flatstack", MODE_PRIVATE);
+        stateHolder = StateHolder.getStateHolder(this);
         mGeofenceList = new ArrayList<>();
         mGeofencePendingIntent = null;
 
-        mGeofencesAdded = mSharedPreferences.getBoolean("GeofencesAdded", false);
+        mGeofencesAdded = stateHolder.isGeofenceAdded();
         populateGeofenceList();
         buildGoogleApiClient();
 
         SwitchCompat switchCompat = (SwitchCompat) findViewById(R.id.cb_enable_app);
+        switchCompat.setChecked(stateHolder.isAutoSilentEnabled());
+        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                stateHolder.setAutoSilentEnabled(checked);
+            }
+        });
     }
 
     @Override
@@ -141,9 +147,7 @@ public class MainActivity extends AppCompatActivity
     public void onResult(Status status) {
         if (status.isSuccess()) {
             mGeofencesAdded = !mGeofencesAdded;
-            SharedPreferences.Editor editor = mSharedPreferences.edit();
-            editor.putBoolean("GeofencesAdded", mGeofencesAdded);
-            editor.apply();
+            stateHolder.setGeofenceAdded(mGeofencesAdded);
 
             Toast.makeText(
                 this,
