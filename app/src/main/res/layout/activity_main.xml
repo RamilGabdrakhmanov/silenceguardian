@@ -13,7 +13,7 @@
 
 
     <android.support.v7.widget.SwitchCompat
-        android:id="@+id/cb_auto_logout"
+        android:id="@+id/cb_enable_app"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="4dp"

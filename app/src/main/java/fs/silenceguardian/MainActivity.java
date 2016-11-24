@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity
         mGeofencesAdded = mSharedPreferences.getBoolean("GeofencesAdded", false);
         populateGeofenceList();
         buildGoogleApiClient();
+
+        SwitchCompat switchCompat = (SwitchCompat) findViewById(R.id.cb_enable_app);
     }
 
     @Override
@@ -110,7 +113,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override public void onConnectionFailed(@NonNull ConnectionResult result) {
         Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " +
-            result.getErrorCode() + " getErrorMessage = "+ result.getErrorMessage());
+            result.getErrorCode() + " getErrorMessage = " + result.getErrorMessage());
     }
 
     private PendingIntent getGeofencePendingIntent() {
