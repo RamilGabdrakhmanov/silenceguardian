@@ -20,7 +20,9 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
+public class MainActivity extends AppCompatActivity
+    implements GoogleApiClient.ConnectionCallbacks,
+    GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
 
     protected static final String TAG = "MainActivity";
 
@@ -38,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mSharedPreferences = getSharedPreferences("flatstack", MODE_PRIVATE);
         mGeofenceList = new ArrayList<>();
         mGeofencePendingIntent = null;
-
 
         mGeofencesAdded = mSharedPreferences.getBoolean("GeofencesAdded", false);
         populateGeofenceList();
@@ -67,11 +68,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private GeofencingRequest getGeofencingRequest() {
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-
         mGeofencePendingIntent = null;
-
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-
         builder.addGeofences(mGeofenceList);
 
         return builder.build();
@@ -124,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void populateGeofenceList() {
-
         mGeofenceList.add(new Geofence.Builder()
             .setRequestId("Flatstack House")
             .setCircularRegion(
