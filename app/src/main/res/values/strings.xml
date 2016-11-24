@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Silence Guardian</string>
+    <string name="enable_app">Enable app</string>
 </resources>
